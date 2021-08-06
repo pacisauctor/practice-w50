@@ -1,0 +1,55 @@
+@use "sass:map";
+
+$notificacion_colores:(
+    "success": green,
+    "warning": yellow,
+    "danger": red,
+);
+
+// variables
+$colorprimary: blue;
+$ancho : 80%;
+$colorprimary: orange !default;
+
+
+// maps
+
+
+body{
+    width: $ancho;
+}
+
+article{
+    $colorprimary: green !global;
+    background-color: $colorprimary;
+    width: $ancho / 4;
+}
+section{
+    background-color: $colorprimary;
+}
+
+// uso de mapas
+.alert{
+    border-radius: 25px;
+    &.danger{
+        background-color: map.get($notificacion_colores,"danger");
+    }
+    &.warning{
+        background-color: map.get($notificacion_colores,"warning");
+    }
+    &.success{
+        background-color: map.get($notificacion_colores,"success");
+    }
+
+}
+
+// bucles
+$avatars: 1 2 3 4;
+@each $avatar in $avatars {
+    .avatar-#{$avatar} {
+        width: 200px;
+        height: 200px;
+        background: url(https://randomuser.me/api/portraits/men/#{$avatar}.jpg);
+    }
+}
+

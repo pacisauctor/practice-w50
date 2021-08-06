@@ -1,0 +1,51 @@
+body {
+  width: 80%;
+}
+
+article {
+  background-color: green;
+  width: 20%;
+}
+
+section {
+  background-color: green;
+}
+
+.alert {
+  border-radius: 25px;
+}
+.alert.danger {
+  background-color: red;
+}
+.alert.warning {
+  background-color: yellow;
+}
+.alert.success {
+  background-color: green;
+}
+
+.avatar-1 {
+  width: 200px;
+  height: 200px;
+  background: url(https://randomuser.me/api/portraits/men/1.jpg);
+}
+
+.avatar-2 {
+  width: 200px;
+  height: 200px;
+  background: url(https://randomuser.me/api/portraits/men/2.jpg);
+}
+
+.avatar-3 {
+  width: 200px;
+  height: 200px;
+  background: url(https://randomuser.me/api/portraits/men/3.jpg);
+}
+
+.avatar-4 {
+  width: 200px;
+  height: 200px;
+  background: url(https://randomuser.me/api/portraits/men/4.jpg);
+}
+
+/*# sourceMappingURL=variables.css.map */
