@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+
+{% block principal %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1>Mi primera página</h1>
+        </div>
+    </div>
+    <div class="row">
+        {% for row in rows %}
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title" >{{ row.titulo }}</h2>  
+
+                        <h3 class="card-subtitle">Hecho por {{row.autor}}</h3>
+                        <p class="card-text">
+                            {{ row.contenido }}
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <form action="" method="post">
+            <div class="mb-3">
+                <label for="autor" class="form-label">Autor</label>
+                <input type="text" required class="form-control" id="autor" name="autor" placeholder="Yo">
+            </div>
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Titulo</label>
+                <input type="text" required class="form-control" id="titulo" name="titulo">
+            </div>
+            <div class="mb-3">
+                <label for="contenido" class="form-label">Contenido</label>
+                <textarea class="form-control" id="contenido" name="contenido" rows="3"></textarea>
+            </div>
+            <input type="submit" value="Enviar" class="btn btn-primary">
+        
+        </form>
+    </div>
+</div>
+
+{% endblock %}
