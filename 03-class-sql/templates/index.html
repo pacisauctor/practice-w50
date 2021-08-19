@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <ul>
+
+        {% for fila in filas %}
+            <li>{{ fila['Nombre'] }} está registrado</li>
+
+        {% endfor %}
+
+    </ul>
+
+{% endblock %}
