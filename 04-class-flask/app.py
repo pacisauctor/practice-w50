@@ -33,6 +33,18 @@ def admin():
 
     return render_template("admin.html", rows=rows)
 
+@app.route("/users/<int:id_user>")
+def user_detail(id_user):
+
+    rows = db.execute("SELECT * FROM users where id_user=:id_user",
+    {"id_user": id_user}
+    ).fetchall()
+
+
+    return render_template("admin.html", rows=rows)
+
+
+
 @app.route("/auth")
 def auth():
     return render_template("auth.html")

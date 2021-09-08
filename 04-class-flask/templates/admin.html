@@ -10,7 +10,11 @@ Inicio
 <ul>
     {% for row in rows %}
     
-    <li>{{row}}</li>
+    <li>{{row}}
+
+        <a href="/users/{{row[0]}}" class="btn btn-info">Ver detalle</a>
+    </li>
+
     
     {% endfor %}
 </ul>
