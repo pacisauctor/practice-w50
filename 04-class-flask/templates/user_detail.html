@@ -5,16 +5,19 @@ Inicio
 {% endblock %}
 
 {% block main %}
+
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <form action="/new-annotation" method="post">
-            <input type="text" name="content" id="content" class="form-control" autocomplete="off" required>
-            </form>
-        </div>
+<div class="row">
+    <div class="col-12">
+    <h1>Inicio</h1>
+    <ul>
+        <li>{{user_detail}}</li>
+    </ul>
     </div>
-    <div class="row">
-        {% for row in rows %}
+
+</div>
+<div class="row">
+  {% for row in annotations %}
         <div class="card col-3">
           <div class="card-body">
             <h5 class="card-title">Código: #{{row[0]}} </h5>
@@ -25,7 +28,8 @@ Inicio
           </div>
         </div>
         {% endfor %}
-    </div>
 
 </div>
+</div>
+
 {% endblock %}

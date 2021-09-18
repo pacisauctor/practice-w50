@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, flash
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -23,7 +23,27 @@ Session(app)
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    rows = db.execute("SELECT * FROM annotations").fetchall()
+
+    return render_template("index.html", rows=rows)
+
+@app.route("/new-annotation", methods=["POST"])
+def new_annotation():
+    if not session.get("user_id"):
+        flash("Debes iniciar sesión para agregar anotaciones")
+        return redirect("/")
+    user_id= session["user_id"]
+    content = request.form.get('content')
+    result = db.execute("""
+        INSERT INTO annotations(id_user, content)
+        VALUES(:id_user, :content)
+    """, {
+        "id_user": user_id,
+        "content": content
+    })
+    db.commit()
+    flash("Anotación agregada:D")
+    return redirect("/")
 
 
 @app.route('/admin')
@@ -36,12 +56,15 @@ def admin():
 @app.route("/users/<int:id_user>")
 def user_detail(id_user):
 
-    rows = db.execute("SELECT * FROM users where id_user=:id_user",
+    annotations = db.execute("SELECT * FROM annotations where id_user=:id_user",
     {"id_user": id_user}
     ).fetchall()
 
+    user_detail = db.execute("SELECT username, email FROM users where id_user=:id_user",
+    {"id_user": id_user}
+    ).fetchone()
 
-    return render_template("admin.html", rows=rows)
+    return render_template("user_detail.html", annotations=annotations, user_detail=user_detail)
 
 
 
@@ -63,16 +86,16 @@ def login():
     result = db.execute("select * from users where username=:username", {"username": username}).fetchone()
 
     if not result:
-        print("valimos")
+        return render_template("auth.html", error= "Usuario no existe.", is_login=True)
     else:
         if check_password_hash(result[2], password):
-            print("iniciando sesión...")
+            
             
             session["user_id"] = result[0]
             session["username"] = result[1]
         else:
-            print("contraseña incorrecta")
-
+            return render_template("auth.html", error= "contraseña incorrecta.", is_login=True)
+    flash("Iniciando sesión :D")
     return render_template("index.html")
 
 
@@ -81,6 +104,12 @@ def register():
     username = request.form.get('username')
     password = request.form.get('password')
     email  = request.form.get('email')
+    
+    validate = db.execute(""" 
+        SELECT * FROM users WHERE username=:username OR email=:email
+    """,{"username": username, "email": email}).rowcount
+    if validate != 0:
+        return render_template("auth.html", error="Usuario o correo ya en uso.")
 
     result = db.execute("""
         INSERT INTO users(username, pass, email)
@@ -94,5 +123,6 @@ def register():
     db.commit()
     session["user_id"] = result[0]
     session["username"] = result[1]
+    flash("Se registró satisfactoriamente.")
 
     return redirect("/")
